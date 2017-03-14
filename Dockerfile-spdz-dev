@@ -2,7 +2,7 @@ FROM spdz/libs
 
 # Assumes you have spdz checked out to host file system 
 # Build container with:
-#   docker build -f Dockerfile-dev -t spdz/spdzdev .
+#   docker build -f Dockerfile-spdz-dev -t spdz/spdzdev .
 # Run container with:
 #   docker run -it --rm -p 14000-14010:14000-14010 -v /Users/je0018/Development/spdz:/spdz spdz/spdzdev
 #   once running, can be used to run n parties, generate offline data etc.

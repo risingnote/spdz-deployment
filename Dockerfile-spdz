@@ -2,7 +2,7 @@ FROM spdz/libs
 
 # Pull SPDZ code into docker and build. Use as base to run specific mpc programs.
 # Build container with:
-#   docker build -f Dockerfile -t spdz/spdz .
+#   docker build -f Dockerfile-spdz -t spdz/spdz .
 # Run container with:
 
 LABEL name="SPDZ MPC software" \
@@ -12,7 +12,7 @@ LABEL name="SPDZ MPC software" \
 
 RUN useradd -ms /bin/bash spdzuser
 WORKDIR /home/spdzuser/spdz
-COPY . /home/spdzuser/spdz
+COPY spdz /home/spdzuser/spdz
 
 RUN chown -R spdzuser:spdzuser /home/spdzuser
 
@@ -20,4 +20,3 @@ USER spdzuser
 
 RUN make clean \
   && make -j"$(nproc)" 
-

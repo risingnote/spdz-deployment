@@ -3,14 +3,6 @@ Store artifacts to manage deployment of SPDZ engines. Deploy scripts, Docker fil
 
 Separated out from spdz repo to avoid polluting with non core files.
 
-## Setup
-
-The SPDZ repo is included as a sub directory which is manually managed.
-
-So to pull down for the first time run:
-
- 
-
 ## Docker support
 SPDZ engines are deployed in Docker containers using the following Docker files.
 
@@ -20,13 +12,31 @@ Builds on Centos 7 latest and installs gcc 6.2.
 
 Build with `docker build -f Dockerfile-gcc -t spdz/gcc:6.2 .`
 
-* `Dockerfile-spdz-libs` installs library dependencies for SPDZ
-* `../Dockerfile` copies the source files into a container and builds SPDZ, intended to be extended for specific SPDZ programs
-* `../Dockerfile-dev` mounts the source files into a container to allow interactive dev and testing 
+`Dockerfile-spdz-libs`
 
-See docker files for instructions to build.
+Installs library dependencies for SPDZ
 
-To run Dockerfile-dev:
+Build with `docker build -f Dockerfile-spdz-libs -t spdz/libs:latest .`
 
-    docker run -it --rm -p 14000-14010:14000-14010 -v <location of spdz on host directory>:/spdz spdz/spdzdev
+`Dockerfile-spdz`
+
+Copies the source files into a container and builds SPDZ, no MPC compilation.
+
+Ensure that the correct version of spdz is available in the spdz subdirectory.
+
+Build with `docker build -f Dockerfile-spdz -t spdz/spdz .`
+
+`Dockerfile-spdz-dev`
+
+Convenience container to mount the SPDZ source files into a container to allow interactive dev and testing
+
+Build with `docker build -f Dockerfile-spdz-dev -t spdz/spdzdev .`
+
+Run with 
+
+```
+docker run -it --rm -p 14000-14010:14000-14010 -v <location of spdz on host directory>:/spdz spdz/spdzdev
+```
+
+`Dockerfile-spdz-preprocess`
 
