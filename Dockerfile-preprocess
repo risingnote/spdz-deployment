@@ -1,0 +1,19 @@
+FROM spdz/spdz
+
+# Generate pre processing material to be used by SPDZ parties.
+# Build container with:
+#   docker build -f Dockerfile-preprocess -t spdz/spdz-preprocess .
+# Run container with:
+#   docker run -t --rm -v /location/tostore/preprocess/data:/home/spdzuser/spdz/Player-Data \ 
+#       spdz/spdz-preprocess <number of parties, default is 2>
+
+LABEL name="SPDZ MPC software" \
+      description="Run fake-offline pre-processing phase for specified number of SPDZ parties." \
+      maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
+      license="University of Bristol : Open Access Software Licence" 
+
+VOLUME /home/spdzuser/spdz/Player-Data
+
+ENTRYPOINT ["Scripts/setup-online.sh"]
+
+CMD ["2"]

@@ -1,0 +1,25 @@
+FROM spdz/libs
+
+# Assumes you have spdz checked out to host file system 
+# Build container with:
+#   docker build -f Dockerfile-dev -t spdz/spdzdev .
+# Run container with:
+#   docker run -it --rm -p 14000-14010:14000-14010 -v /Users/je0018/Development/spdz:/spdz spdz/spdzdev
+#   once running, can be used to run n parties, generate offline data etc.
+
+LABEL name="SPDZ MPC Dev" \
+      description="SPDZ MPC software dev environment, using host file system." \
+      maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
+      license="University of Bristol : Open Access Software Licence" 
+
+RUN mkdir /spdz
+
+VOLUME /spdz
+
+EXPOSE 14000-14010
+
+WORKDIR /spdz
+
+CMD ["bash"]
+
+

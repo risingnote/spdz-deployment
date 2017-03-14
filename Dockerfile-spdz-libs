@@ -1,0 +1,45 @@
+FROM spdz/gcc:6.2
+
+# Build container with:
+#   docker build -f Dockerfile-spdz-libs -t spdz/libs:latest .
+
+LABEL name="Centos with SPDZ libraries installed" \
+      description="Provide a standard config for building SPDZ." \
+      maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
+      license="University of Bristol : Open Access Software Licence" 
+
+# Install spdz library dependencies (almost certainly not complete as only supports privateclient branch)
+
+# Goes into /usr/local/lib/libmpir....
+RUN curl -fSL "http://mpir.org/mpir-2.7.2.tar.bz2" -o mpir.tar.bz2 \
+  && mkdir -p /usr/src/mpir \
+  && tar -xf mpir.tar.bz2 -C /usr/src/mpir --strip-components=1 \
+	&& rm mpir.tar.bz2 \
+	&& cd /usr/src/mpir \
+  && dir="$(mktemp -d)" \
+	&& cd "$dir" \
+	&& /usr/src/mpir/configure \
+		--enable-cxx \
+	&& make -j"$(nproc)" \
+	&& make install \
+	&& cd .. \
+	&& rm -rf "$dir"	
+
+
+# Goes into /usr/local/lib/libsodium ....
+RUN curl -fSL "https://download.libsodium.org/libsodium/releases/libsodium-1.0.11.tar.gz" -o libsodium.tar.gz \
+  && mkdir -p /usr/src/libsodium \
+  && tar -xf libsodium.tar.gz -C /usr/src/libsodium --strip-components=1 \
+	&& rm libsodium.tar.gz \
+	&& cd /usr/src/libsodium \
+  && dir="$(mktemp -d)" \
+	&& cd "$dir" \
+	&& /usr/src/libsodium/configure \
+	&& make -j"$(nproc)" \
+	&& make install \
+	&& cd .. \
+	&& rm -rf "$dir"	
+
+# Note sure why installing into /usr/local/lib (not lib64), but ensure added to library path
+RUN echo '/usr/local/lib' > /etc/ld.so.conf.d/local-lib.conf \
+	&& ldconfig -v
