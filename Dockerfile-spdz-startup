@@ -1,0 +1,18 @@
+FROM spdz/spdz
+
+# Run the startup server to coordinate SPDZ engines.
+# Build container with:
+#   docker build -f Dockerfile-spdz-startup -t spdz/spdz-startup .
+# Run container with:
+#   docker run -d --name spdz-startup --rm -p 12999:12999 --env parties=3 spdz/spdz-startup
+
+LABEL name="SPDZ MPC Run Startup process" \
+      description="Run the Startup program to coordinate SPDZ parties at startup.." \
+      maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
+      license="University of Bristol : Open Access Software Licence" 
+
+ENV parties=2
+
+EXPOSE 12999
+
+ENTRYPOINT exec ./Server.x $parties 13000
