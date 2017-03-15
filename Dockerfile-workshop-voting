@@ -3,10 +3,7 @@ FROM spdz/spdz
 # Compile the workshop_voting mpc program into the container and setup hooks to pass in run time information.
 # Build container with:
 #   docker build -f Dockerfile-workshop-voting -t spdz/workshop-voting .
-# Run container with:
-#   docker run -d --rm -p 14000-14010:14000-14010 --env playerId=0 --env startupHost=1.2.3.4 \ 
-#          -v $(pwd)/Player-Data:/home/spdzuser/spdz/Player-Data -v $(pwd)/logs:/home/spdzuser/spdz/logs \
-#          spdz/workshop-voting
+# Run container with - see Scripts/run-spdz.sh
 
 LABEL name="SPDZ MPC Party Runtime" \
       description="Compile a SPDZ MPC program and provide run time hooks." \
@@ -24,6 +21,7 @@ ENV startupHost=localhost
 
 VOLUME /home/spdzuser/spdz/Player-Data
 
-VOLUME /home/sdpzuser/spdz/logs
+VOLUME /home/spdzuser/spdz/logs
 
-ENTRYPOINT exec ./Player-Online.x -lgp 128 -lg2 40 -m empty -h $startupHost -pn 13000 $playerId workshop_voting
+ENTRYPOINT exec ./Player-Online.x -lgp 128 -lg2 40 -m empty -h $startupHost -pn 13000 $playerId workshop_voting \
+ > /home/spdzuser/spdz/logs/$playerId 2>&1
