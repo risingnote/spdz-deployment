@@ -10,6 +10,9 @@ LABEL name="SPDZ MPC Party Runtime" \
       maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
       license="University of Bristol : Open Access Software Licence" 
 
+#TODO copy in workshop_voting program at build time
+#Optional compiler args e.g. -M
+
 RUN ./compile.py workshop_voting
 
 ENV playerId=0
@@ -19,8 +22,10 @@ ENV startupHost=localhost
 # server ports to listen on depend on player id (14010 + playerId, 14020 + playerId, 13000 + playerId)
 # expose at run time with --expose and -p.
 
+# Pass in offline data at run time for specific player 
 VOLUME /home/spdzuser/spdz/Player-Data
 
+# Store logs onto host file system
 VOLUME /home/spdzuser/spdz/logs
 
 ENTRYPOINT exec ./Player-Online.x -lgp 128 -lg2 40 -m empty -h $startupHost -pn 13000 $playerId workshop_voting \
