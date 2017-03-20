@@ -1,9 +1,13 @@
-FROM spdz/libs
+FROM spdz/libs:1.0
 
-# Pull SPDZ code into docker and build. Use as base to run specific mpc programs.
+# Pull SPDZ code into docker and build. Use as base to build other docker images.
 # Build container with:
-#   docker build -f Dockerfile-spdz -t spdz/spdz .
-# Run container with:
+#   docker build -f Dockerfile-spdz -t spdz/spdz:<git_branch_tag> .
+# 
+# Tag is important to fix this docker image to a version of the code base. Suggest:
+# git_tag if building from release tag on master
+# git_branch_tag if building from tag on other branch
+# git_branch_latest_commit_tag if building from non release branch with no tag.
 
 LABEL name="SPDZ MPC software" \
       description="Build SPDZ, as user spdzuser. A base for deploying SPDZ parties." \
@@ -19,4 +23,7 @@ RUN chown -R spdzuser:spdzuser /home/spdzuser
 USER spdzuser
 
 RUN make clean \
-  && make -j"$(nproc)" 
+  && make -j"$(nproc)" \ 
+  && find . -name "*.cpp" -type f -delete \
+  && find . -name "*.h" -type f -delete \
+  && find . -name "*.o" -type f -delete

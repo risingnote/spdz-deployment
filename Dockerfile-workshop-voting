@@ -1,4 +1,4 @@
-FROM spdz/spdz
+FROM spdz/spdz:privateclient_server
 
 # Compile the workshop_voting mpc program into the container and setup hooks to pass in run time information.
 # Build container with:

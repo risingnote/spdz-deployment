@@ -1,4 +1,4 @@
-FROM spdz/spdz
+FROM spdz/spdz:privateclient_7b027d
 
 # Generate pre processing material to be used by SPDZ parties.
 # Build container with:

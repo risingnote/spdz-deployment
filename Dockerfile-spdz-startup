@@ -1,4 +1,4 @@
-FROM spdz/spdz
+FROM spdz/spdz:privateclient_server
 
 # Run the startup server to coordinate SPDZ engines.
 # Build container with:

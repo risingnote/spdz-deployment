@@ -1,6 +1,6 @@
-FROM spdz/spdz
+FROM spdz/spdz:privateclient_7b027d
 
-# Generate the server DH public private key pair used for client comms.
+# Generate the server DH public private key pair used for client comms and write to SPDZ-Keys.
 # Build container with:
 #   docker build -f Dockerfile-spdz-keymaterial -t spdz/spdz-keymaterial .
 # Run container with:

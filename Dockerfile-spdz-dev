@@ -1,4 +1,4 @@
-FROM spdz/libs
+FROM spdz/libs:1.0
 
 # Assumes you have spdz checked out to host file system 
 # Build container with:
