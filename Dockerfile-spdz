@@ -1,6 +1,8 @@
 FROM spdz/libs:1.0
 
 # Pull SPDZ code into docker and build. Use as base to build other docker images.
+# Note mpc programs are removed (using .dockerignore), these can be compiled in later.
+# 
 # Build container with:
 #   docker build -f Dockerfile-spdz -t spdz/spdz:<git_branch_tag> .
 # 
@@ -10,17 +12,15 @@ FROM spdz/libs:1.0
 # git_branch_latest_commit_tag if building from non release branch with no tag.
 
 LABEL name="SPDZ MPC software" \
-      description="Build SPDZ, as user spdzuser. A base for deploying SPDZ parties." \
+      description="Build SPDZ, as user spdzuser. A base for building SPDZ applications." \
       maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
       license="University of Bristol : Open Access Software Licence" 
 
-RUN useradd -ms /bin/bash spdzuser
-WORKDIR /home/spdzuser/spdz
-COPY spdz /home/spdzuser/spdz
+# Create app directory
+RUN mkdir -p /usr/spdz
+WORKDIR /usr/spdz
 
-RUN chown -R spdzuser:spdzuser /home/spdzuser
-
-USER spdzuser
+COPY spdz /usr/spdz
 
 RUN make clean \
   && make -j"$(nproc)" \ 

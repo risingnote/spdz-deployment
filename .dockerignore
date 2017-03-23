@@ -1,0 +1,37 @@
+# Ignore for building spdz binaries
+###################################
+spdz/Player-Data
+spdz/Prep-Data
+spdz/logs
+spdz/Language-Definition
+spdz/Programs/Source/*
+spdz/.git*
+spdz/ChangeLog
+spdz/cost
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*/*.x
+*/*.o
+*.so
+*.pyc
+*.bc
+*.sch
+*/*.a
+*/*.static
+
+# OS generated files #
+######################
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+**/*.x.dSYM/**

@@ -1,0 +1,1 @@
+Place to store files which are copied into docker files, e.g. mpc programs compiled into specific builds.

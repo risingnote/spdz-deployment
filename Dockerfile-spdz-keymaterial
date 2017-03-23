@@ -4,7 +4,7 @@ FROM spdz/spdz:privateclient_7b027d
 # Build container with:
 #   docker build -f Dockerfile-spdz-keymaterial -t spdz/spdz-keymaterial .
 # Run container with:
-#   docker run -it --rm -v $(pwd):/home/spdzuser/spdz/keys spdz/spdz-keymaterial
+#   docker run -it -u `id -u $USER` --rm -v $(pwd):/home/spdzuser/spdz/keys spdz/spdz-keymaterial
 
 LABEL name="SPDZ MPC key material setup" \
       description="Run client-setup to generate keys used to secure client communication." \
