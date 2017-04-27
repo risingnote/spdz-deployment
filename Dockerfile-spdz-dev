@@ -1,11 +1,11 @@
 FROM spdz/libs:1.0
 
-# Assumes you have spdz checked out to host file system 
-# Build container with:
-#   docker build -f Dockerfile-spdz-dev -t spdz/spdzdev .
-# Run container with:
-#   docker run -it --rm -p 14000-14010:14000-14010 -v /Users/je0018/Development/spdz:/spdz spdz/spdzdev
-#   once running, can be used to run n parties, generate offline data etc.
+  # Assumes you have spdz checked out to host file system 
+  # Build container with:
+  #   docker build -f Dockerfile-spdz-dev -t spdz/spdzdev .
+  # Run container with:
+  #   docker run -it --rm -p 14000-14010:14000-14010 -v /Users/je0018/Development/spdz:/spdz spdz/spdzdev
+  #   once running, can be used to run n parties, generate offline data etc.
 
 LABEL name="SPDZ MPC Dev" \
       description="SPDZ MPC software dev environment, using host file system." \

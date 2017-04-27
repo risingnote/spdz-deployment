@@ -1,4 +1,5 @@
 #!/bin/bash
+# Stop static compiled SPDZ in production.
 
 SPDZROOT=$(cd `dirname $0`; pwd)
 

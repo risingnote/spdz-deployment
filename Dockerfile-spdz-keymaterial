@@ -1,4 +1,4 @@
-FROM spdz/spdz:privateclient_7b027d
+FROM spdz/spdz:v0.3.4-workshop-voting
 
 # Generate the server DH public private key pair used for client comms and write to SPDZ-Keys.
 # Build container with:

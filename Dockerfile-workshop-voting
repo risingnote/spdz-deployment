@@ -1,8 +1,8 @@
-FROM spdz/spdz:v0.3.0-workshop-voting
+FROM spdz/spdz:v0.3.4-workshop-voting
 
 # Compile the workshop_voting mpc program into the container and setup hooks to pass in run time information.
 # Build container with:
-#   docker build -f Dockerfile-workshop-voting -t spdz/workshop-voting .
+#   docker build -f Dockerfile-workshop-voting -t spdz/workshop-voting:va.b.c .
 # Run container with - see Scripts/run-spdz.sh
 
 LABEL name="SPDZ MPC Party Runtime" \

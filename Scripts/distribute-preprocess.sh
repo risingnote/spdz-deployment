@@ -7,7 +7,7 @@ if test -d Player-Data; then
 fi
 mkdir Player-Data
 
-# Add -u `id -u $USER` on linux
+# Add -u `id -u $USER` on linux so generated files are readable by user
 docker run -t --rm -v $(pwd)/Player-Data:/home/spdzuser/spdz/Player-Data spdz/spdz-preprocess 3
 
 ssh mpcalice "mkdir -p /home/je0018/spdz/Player-Data/3-128-40"

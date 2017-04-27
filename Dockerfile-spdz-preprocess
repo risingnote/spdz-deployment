@@ -1,4 +1,4 @@
-FROM spdz/spdz:privateclient_7b027d
+FROM spdz/spdz:v0.3.4-workshop-voting
 
 # Generate pre processing material to be used by SPDZ parties.
 # Build container with:
