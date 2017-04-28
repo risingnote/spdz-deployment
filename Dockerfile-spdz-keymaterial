@@ -1,16 +1,16 @@
 FROM spdz/spdz:v0.3.4-workshop-voting
 
-# Generate the server DH public private key pair used for client comms and write to SPDZ-Keys.
+# Generate the SPDZ party/engine DH public private key pair used for client comms and write to SPDZ-Keys.
 # Build container with:
 #   docker build -f Dockerfile-spdz-keymaterial -t spdz/spdz-keymaterial .
 # Run container with:
-#   docker run -it -u `id -u $USER` --rm -v $(pwd):/home/spdzuser/spdz/keys spdz/spdz-keymaterial
+#   docker run -it -u `id -u $USER` --rm -v $(pwd):/usr/spdz/keys spdz/spdz-keymaterial
 
 LABEL name="SPDZ MPC key material setup" \
       description="Run client-setup to generate keys used to secure client communication." \
       maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
       license="University of Bristol : Open Access Software Licence" 
 
-VOLUME /home/spdzuser/spdz/keys
+VOLUME /usr/spdz/keys
 
 ENTRYPOINT ["./server-key-setup.x"]

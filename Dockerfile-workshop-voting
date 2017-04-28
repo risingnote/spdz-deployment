@@ -21,7 +21,7 @@ ENV playerId=0
 ENV startupHost=localhost
 ENV basePort=13000
 
-# server ports to listen on depend on player id (14010 + playerId, 14020 + playerId, 13000 + playerId)
+# server ports to listen on depend on player id (14000 + playerId, 13000 + playerId)
 # expose at run time with --expose and -p.
 
 # Pass in offline data at run time for specific player 
@@ -31,4 +31,4 @@ VOLUME /usr/spdz/Player-Data
 VOLUME /usr/spdz/logs
 
 ENTRYPOINT exec ./Player-Online.x -lgp 128 -lg2 40 -m empty -h $startupHost -pn $basePort $playerId workshop_voting \
- > /usr/spdz/logs/$playerId 2>&1
+ > /usr/spdz/logs/spdz_player$playerId.log 2>&1

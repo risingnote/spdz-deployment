@@ -4,7 +4,7 @@ FROM spdz/spdz:v0.3.4-workshop-voting
 # Build container with:
 #   docker build -f Dockerfile-spdz-preprocess -t spdz/spdz-preprocess .
 # Run container with:
-#   docker run -t --rm -v /location/tostore/preprocess/data:/home/spdzuser/spdz/Player-Data \ 
+#   docker run -t --rm -v /location/tostore/preprocess/data:/usr/spdz/Player-Data \ 
 #       spdz/spdz-preprocess <number of parties, default is 2>
 
 LABEL name="SPDZ MPC setup phase" \
@@ -12,7 +12,7 @@ LABEL name="SPDZ MPC setup phase" \
       maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
       license="University of Bristol : Open Access Software Licence" 
 
-VOLUME /home/spdzuser/spdz/Player-Data
+VOLUME /usr/spdz/Player-Data
 
 ENTRYPOINT ["Scripts/setup-online.sh"]
 
