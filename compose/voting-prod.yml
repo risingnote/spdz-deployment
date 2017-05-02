@@ -1,0 +1,148 @@
+# THIS IS unusable with current status of docker stack / SWARM - unable to use same port number on different hosts.
+# Production deployed compose file to run voting app containers on 4 UOB VMs.
+# Relies on SWARM cluster having been configured.
+# Start with docker stack deploy -c voting-prod.yml votingapp
+# Stop with docker stack rm votingapp
+version: "3"
+services:
+  spdz-startup:
+    image: spdz/spdz-startup:latest
+    ports:
+      - "12999:12999"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints:
+          - node.hostname == web-mpc-p0
+  workshop-voting0:
+    image: spdz/workshop-voting:v0.3.4
+    expose:
+      - "13000"
+      - "14000"
+    ports:
+      - "13000:13000"
+      - "14000:14000"
+    environment:
+      playerId: 0
+      startupHost: 172.25.2.234
+    volumes:
+      - /opt/spdz/Player-Data:/usr/spdz/Player-Data
+      - /opt/spdz/logs:/usr/spdz/logs
+      - /opt/spdz/Persistence:/usr/spdz/Persistence  
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints:
+          - node.hostname == spdz-mpc-p0
+  spdz-proxy0:
+    image: spdz/spdz-proxy:v0.3.2
+    ports:
+      - "443:8443"
+    environment:
+      SPDZ_HOST: workshop-voting0
+      SPDZ_PORT: 14000
+      REST_PORT: 8443
+      LOG_LEVEL: debug
+    volumes:
+      - /opt/spdz/certs:/usr/app/certs
+      - /opt_spdz/logs:/usr/app/logs
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints:
+          - node.hostname == spdz-mpc-p0      
+  workshop-voting1:
+    image: spdz/workshop-voting:v0.3.4
+    expose:
+      - "13001"
+      - "14001"
+    ports:
+      - "13001:13001"
+      - "14001:14001"
+    environment:
+      playerId: 1
+      startupHost: 172.25.2.234
+    volumes:
+      - /opt/spdz/Player-Data:/usr/spdz/Player-Data
+      - /opt/spdz/logs:/usr/spdz/logs
+      - /opt/spdz/Persistence:/usr/spdz/Persistence  
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints:
+          - node.hostname == spdz-mpc-p1
+  spdz-proxy1:
+    image: spdz/spdz-proxy:v0.3.2
+    ports:
+      - "443:8443"
+    environment:
+      SPDZ_HOST: workshop-voting1
+      SPDZ_PORT: 14001
+      REST_PORT: 8443
+      LOG_LEVEL: debug
+    volumes:
+      - /opt/spdz/certs:/usr/app/certs
+      - /opt_spdz/logs:/usr/app/logs
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints:
+          - node.hostname == spdz-mpc-p1                
+  workshop-voting2:
+    image: spdz/workshop-voting:v0.3.4
+    expose:
+      - "13002"
+      - "14002"
+    ports:
+      - "13002:13002"
+      - "14002:14002"
+    environment:
+      playerId: 2
+      startupHost: 172.25.2.234
+    volumes:
+      - /opt/spdz/Player-Data:/usr/spdz/Player-Data
+      - /opt/spdz/logs:/usr/spdz/logs
+      - /opt/spdz/Persistence:/usr/spdz/Persistence  
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints:
+          - node.hostname == spdz-mpc-p2
+  spdz-proxy2:
+    image: spdz/spdz-proxy:v0.3.2
+    ports:
+      - "443:8443"
+    environment:
+      SPDZ_HOST: workshop-voting2
+      SPDZ_PORT: 14002
+      REST_PORT: 8443
+      LOG_LEVEL: debug
+    volumes:
+      - /opt/spdz/certs:/usr/app/certs
+      - /opt_spdz/logs:/usr/app/logs
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: none
+      placement:
+        constraints:
+          - node.hostname == spdz-mpc-p2
