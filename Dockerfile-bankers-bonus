@@ -1,0 +1,34 @@
+FROM spdz/spdz:v0.3.4-workshop-voting
+
+# Compile the bankers bonus mpc program into the container and setup hooks to pass in run time information.
+# Build container with:
+#   docker build -f Dockerfile-bankers-bonus -t spdz/bankers-bonus:va.b.c .
+# Run container with - see Scripts/runBankersBonus.sh
+
+LABEL name="SPDZ MPC Bankers Bonus" \
+      description="Compile a SPDZ MPC program and provide run time hooks." \
+      maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
+      license="University of Bristol : Open Access Software Licence" 
+
+# Optional compiler args e.g. -M
+ARG compilerArgs=''
+
+COPY buildtemp/bankers_bonus.mpc Programs/Source
+
+RUN ./compile.py $compilerArgs bankers_bonus
+
+ENV playerId=0
+ENV startupHost=localhost
+ENV basePort=13000
+
+# server ports to listen on depend on player id (14000 + playerId, 13000 + playerId)
+# expose at run time with --expose and -p.
+
+# Pass in offline data at run time for specific player 
+VOLUME /usr/spdz/Player-Data
+
+# Store logs onto host file system
+VOLUME /usr/spdz/logs
+
+ENTRYPOINT exec ./Player-Online.x -lgp 128 -lg2 40 -m empty -h $startupHost -pn $basePort $playerId bankers_bonus \
+ > /usr/spdz/logs/spdz_player$playerId.log 2>&1
