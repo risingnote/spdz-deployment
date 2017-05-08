@@ -1,4 +1,4 @@
-FROM spdz/spdz:v0.3.4-workshop-voting
+FROM spdz/spdz:snapshot
 
 # Compile the bankers bonus mpc program into the container and setup hooks to pass in run time information.
 # Build container with:
@@ -12,14 +12,18 @@ LABEL name="SPDZ MPC Bankers Bonus" \
 
 # Optional compiler args e.g. -M
 ARG compilerArgs=''
+# Pgm to run
+ARG mpcProgram=bankers_bonus
 
-COPY buildtemp/bankers_bonus.mpc Programs/Source
+# buildtemp needed because of .dockerignore file for other build
+COPY buildtemp/$mpcProgram.mpc Programs/Source
 
-RUN ./compile.py $compilerArgs bankers_bonus
+RUN ./compile.py $compilerArgs $mpcProgram
 
 ENV playerId=0
 ENV startupHost=localhost
 ENV basePort=13000
+ENV mpcPgm=$mpcProgram
 
 # server ports to listen on depend on player id (14000 + playerId, 13000 + playerId)
 # expose at run time with --expose and -p.
@@ -30,5 +34,5 @@ VOLUME /usr/spdz/Player-Data
 # Store logs onto host file system
 VOLUME /usr/spdz/logs
 
-ENTRYPOINT exec ./Player-Online.x -lgp 128 -lg2 40 -m empty -h $startupHost -pn $basePort $playerId bankers_bonus \
+ENTRYPOINT exec ./Player-Online.x -lgp 128 -lg2 40 -m empty -h $startupHost -pn $basePort $playerId $mpcPgm \
  > /usr/spdz/logs/spdz_player$playerId.log 2>&1
