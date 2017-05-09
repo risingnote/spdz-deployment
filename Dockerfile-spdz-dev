@@ -1,4 +1,4 @@
-FROM spdz/libs:1.0
+FROM spdz/libs:1.1
 
   # Assumes you have spdz checked out to host file system 
   # Build container with:
@@ -12,7 +12,16 @@ LABEL name="SPDZ MPC Dev" \
       maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
       license="University of Bristol : Open Access Software Licence" 
 
-RUN mkdir /spdz
+# Setup dir and install python gmpy to allow tests to be run later.
+RUN mkdir /spdz \
+ && yum install -y epel-release \
+ && yum install -y python-devel \
+ && yum install -y python-pip \
+ && yum install -y python-wheel \
+ && pip install --upgrade pip \
+ && pip install gmpy \
+ && echo 'export PYTHONPATH=.' >> ~/.bash_profile \
+ && source ~/.bash_profile 
 
 VOLUME /spdz
 
@@ -20,6 +29,6 @@ EXPOSE 14000-14010
 
 WORKDIR /spdz
 
-CMD ["bash"]
+CMD ["/bin/bash", "--login"]
 
 

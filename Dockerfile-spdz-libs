@@ -19,7 +19,7 @@ RUN curl -fSL "http://mpir.org/mpir-2.7.2.tar.bz2" -o mpir.tar.bz2 \
   && dir="$(mktemp -d)" \
 	&& cd "$dir" \
 	&& /usr/src/mpir/configure \
-		--enable-cxx \
+		--enable-cxx --enable-gmpcompat \
 	&& make -j"$(nproc)" \
 	&& make install \
 	&& cd .. \
