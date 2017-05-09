@@ -12,7 +12,7 @@ LABEL name="SPDZ MPC Dev" \
       maintainer="Jonathan Evans <jon.evans@bristol.ac.uk>" \
       license="University of Bristol : Open Access Software Licence" 
 
-# Setup dir and install python gmpy to allow tests to be run later.
+# Setup dir and install python gmpy and networkx to allow tests to be run later.
 RUN mkdir /spdz \
  && yum install -y epel-release \
  && yum install -y python-devel \
@@ -20,6 +20,7 @@ RUN mkdir /spdz \
  && yum install -y python-wheel \
  && pip install --upgrade pip \
  && pip install gmpy \
+ && pip install networkx \
  && echo 'export PYTHONPATH=.' >> ~/.bash_profile \
  && source ~/.bash_profile 
 
