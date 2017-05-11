@@ -69,7 +69,7 @@ services:
       - /Users/je0018/temp/spdzproxy:/usr/app/certs
       - /Users/je0018/temp/logs:/usr/app/logs
   bankers-bonus-gui:
-    image: spdz/bankers-bonus-gui:v0.4.1
+    image: spdz/bankers-bonus-gui:v0.4.2
     depends_on:
       - spdz-proxy0
       - spdz-proxy1
