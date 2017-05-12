@@ -22,8 +22,8 @@ services:
       playerId: 0
       startupHost: spdz-startup
     volumes:
-      - /Users/je0018/temp/Player-Data:/usr/spdz/Player-Data
-      - /Users/je0018/temp/logs:/usr/spdz/logs
+      - ${HOME}/temp/Player-Data:/usr/spdz/Player-Data
+      - ${HOME}/temp/logs:/usr/spdz/logs
   bankers-bonus1:
     image: spdz/bankers-bonus:v0.3.5
     depends_on:
@@ -38,10 +38,10 @@ services:
       playerId: 1
       startupHost: spdz-startup
     volumes:
-      - /Users/je0018/temp/Player-Data:/usr/spdz/Player-Data
-      - /Users/je0018/temp/logs:/usr/spdz/logs
+      - ${HOME}/temp/Player-Data:/usr/spdz/Player-Data
+      - ${HOME}/temp/logs:/usr/spdz/logs
   spdz-proxy0:
-    image: spdz/spdz-proxy:v0.3.3
+    image: spdz/spdz-proxy:v0.4.0
     depends_on:
       - bankers-bonus0
     ports:
@@ -49,13 +49,11 @@ services:
     environment:
       SPDZ_HOST: bankers-bonus0
       SPDZ_PORT: 14000
-      REST_PORT: 8080
       LOG_LEVEL: debug
     volumes:
-      - /Users/je0018/temp/spdzproxy:/usr/app/certs
-      - /Users/je0018/temp/logs:/usr/app/logs
+      - ${HOME}/temp/logs:/usr/app/logs
   spdz-proxy1:
-    image: spdz/spdz-proxy:v0.3.3
+    image: spdz/spdz-proxy:v0.4.0
     depends_on:
       - bankers-bonus1
     ports:
@@ -63,13 +61,11 @@ services:
     environment:
       SPDZ_HOST: bankers-bonus1
       SPDZ_PORT: 14001
-      REST_PORT: 8080
       LOG_LEVEL: debug
     volumes:
-      - /Users/je0018/temp/spdzproxy:/usr/app/certs
-      - /Users/je0018/temp/logs:/usr/app/logs
+      - ${HOME}/temp/logs:/usr/app/logs
   bankers-bonus-gui:
-    image: spdz/bankers-bonus-gui:v0.4.2
+    image: spdz/bankers-bonus-gui:v0.5.1
     depends_on:
       - spdz-proxy0
       - spdz-proxy1
@@ -79,6 +75,16 @@ services:
       NODE_ENV: production
       LOG_LEVEL: debug
     volumes:
-      - /Users/je0018/temp/bankersgui:/usr/app/certs
-      - /Users/je0018/temp/bankersgui:/usr/app/config
-      - /Users/je0018/temp/logs:/usr/app/logs
+      - ${HOME}/temp/bankersgui:/usr/app/config
+      - ${HOME}/temp/logs:/usr/app/logs
+  nginx-proxy:
+    image: nginx:1.12.0
+    depends_on:
+      - bankers-bonus-gui
+    ports:
+      - "8081:80"
+      - "3110:3110"
+      - "3111:3111"      
+    volumes:
+      - ${HOME}/development/spdz-deployment/nginx/bankers-dev.conf:/etc/nginx/nginx.conf:ro
+      - ${HOME}/temp/logs:/var/log/nginx
