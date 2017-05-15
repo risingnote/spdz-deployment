@@ -4,4 +4,4 @@
 
 docker stop nginx-proxy
 
-docker run --name nginx-proxy --rm -d -v $(pwd)/bankers-dev.conf:/etc/nginx/nginx.conf:ro -v /Users/je0018/temp/logs:/var/log/nginx -p 8081:80 -p 3110:3110 -p 3111:3111 nginx:1.12.0 
+docker run --name nginx-proxy --rm -d -v $(pwd)/bankers-dev.conf:/etc/nginx/nginx.conf:ro -v /Users/je0018/temp/logs:/var/log/nginx -v $(pwd)/landingPage:/usr/share/nginx/html -p 8080:80 nginx:1.12.0 
