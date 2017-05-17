@@ -42,7 +42,7 @@ other:
 
 Note that installing Docker amends iptables as it inserts forward rules which allow incoming TCP connections (even without INPUT rules). However to ensure that the SPDZ demonstrators can run in or outside Docker, make the following changes on alice, bob and carol.
 
-```(to find best place to insert new rule)``` - to query input rules to find best place to insert new rule. 
+```sudo iptables -L INPUT --line-numbers``` - to query input rules to find best place to insert new rule. 
 
 Insert the rule to allow SPDZ engines to communicat with each other (here inserting at position 10):
 
@@ -65,5 +65,5 @@ Backup iptables to keep changes through a reboot:
 1. Workshop voting GUI runs SSL connections from mpc -> alice, bob and carol at startup. There is a problems with running SSL connections over internal network with an SSL handshake error. This is caused by using the external ip addresses which go through a load balancer. Solution is to use internal IP to make SSL handshake and then override wrong host in certificate
 warning with node environment variable  NODE_TLS_REJECT_UNAUTHORIZED=1.
 
-2. yum-cron runs at 0400 approx and if it updates docker the docker containers are killed.
+2. yum-cron runs at 0400 approx and if it updates docker, running containers are killed.
 

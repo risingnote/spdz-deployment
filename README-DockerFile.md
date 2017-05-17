@@ -38,7 +38,7 @@ Build with `docker build -f Dockerfile-spdz -t spdz/spdz .`
 
 `Dockerfile-spdz-dev`
 
-Convenience container to mount the SPDZ source files from the host file system into a container to allow interactive dev and testing, e.g. on MacOS. Installs the python dependencies to all the Scripts/test.sh tests to be run.
+Convenience container to mount the SPDZ source files from the host file system into a container to allow interactive dev and testing, e.g. on MacOS. Installs the python dependencies to allow the Scripts/test.sh tests to be run.
 
 Build with `docker build -f Dockerfile-spdz-dev -t spdz/spdzdev .`
 

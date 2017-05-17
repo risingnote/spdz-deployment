@@ -2,7 +2,7 @@
 The following scripts are used to stop and start dockerised services from web-mpc-p0, which is exposed at [https://mpc.cs.bris.ac.uk](https://mpc.cs.bris.ac.uk).
 
 ### Prerequisites
-VM setup, for instructions see top level [README](https://github.com/bristolcrypto/spdz-deployment/blob/master/README.md).
+VM setup, for instructions see [VM Setup README](https://github.com/bristolcrypto/spdz-deployment/blob/master/README-VMSetup.md).
 
 The ```/opt/spdz/``` directory location to hold config, logs and other container input/output. See individual services for details of requirements.
 
