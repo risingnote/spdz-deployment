@@ -62,8 +62,8 @@ Backup iptables to keep changes through a reboot:
 
 ### Issues
 
-1. Workshop voting GUI runs SSL connections from mpc -> alice, bob and carol at startup. There is a problems with running SSL connections over internal network with an SSL handshake error. This is caused by using the external ip addresses which go through a load balancer. Solution is to use internal IP to make SSL handshake and then override wrong host in certificate
-warning with node environment variable  NODE_TLS_REJECT_UNAUTHORIZED=1.
+1. The workshop voting GUI runs SSL connections from mpc -> alice, bob and carol at startup. There is a problem with running SSL connections using the external IP addresses from the internal network, producing an SSL handshake error. This is related to the load balancer used by external web access. The pragmatic solution adopted is to use the internal IP addresses and to override the wrong host in certificate
+warning with the node environment variable  NODE_TLS_REJECT_UNAUTHORIZED=1.
 
-2. yum-cron runs at 0400 approx and if it updates docker, running containers are killed.
+2. yum-cron runs at 0400 approx and if a docker update is applied the running containers are killed and not automatically restarted.
 
