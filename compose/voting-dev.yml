@@ -9,7 +9,7 @@ services:
     ports:
       - "12999:12999"
   workshop-voting0:
-    image: spdz/workshop-voting:v0.3.4_dev
+    image: spdz/workshop-voting:v0.3.5_dev
     depends_on:
       - spdz-startup
     expose:
@@ -22,11 +22,11 @@ services:
       playerId: 0
       startupHost: spdz-startup
     volumes:
-      - /Users/je0018/temp/Player-Data:/usr/spdz/Player-Data
-      - /Users/je0018/temp/logs:/usr/spdz/logs
-      - /Users/je0018/temp/Persistence:/usr/spdz/Persistence    
+      - ${HOME}/temp/Player-Data:/usr/spdz/Player-Data
+      - ${HOME}/temp/logs:/usr/spdz/logs
+      - ${HOME}/temp/Persistence:/usr/spdz/Persistence    
   workshop-voting1:
-    image: spdz/workshop-voting:v0.3.4_dev
+    image: spdz/workshop-voting:v0.3.5_dev
     depends_on:
       - spdz-startup
     expose:
@@ -39,11 +39,11 @@ services:
       playerId: 1
       startupHost: spdz-startup
     volumes:
-      - /Users/je0018/temp/Player-Data:/usr/spdz/Player-Data
-      - /Users/je0018/temp/logs:/usr/spdz/logs
-      - /Users/je0018/temp/Persistence:/usr/spdz/Persistence
+      - ${HOME}/temp/Player-Data:/usr/spdz/Player-Data
+      - ${HOME}/temp/logs:/usr/spdz/logs
+      - ${HOME}/temp/Persistence:/usr/spdz/Persistence
   spdz-proxy0:
-    image: spdz/spdz-proxy:v0.3.2_rc
+    image: spdz/spdz-proxy:v0.4.0
     depends_on:
       - workshop-voting0
     ports:
@@ -51,13 +51,11 @@ services:
     environment:
       SPDZ_HOST: workshop-voting0
       SPDZ_PORT: 14000
-      REST_PORT: 8080
       LOG_LEVEL: debug
     volumes:
-      - /Users/je0018/temp/spdzproxy:/usr/app/certs
-      - /Users/je0018/temp/logs:/usr/app/logs
+      - ${HOME}/temp/logs:/usr/app/logs
   spdz-proxy1:
-    image: spdz/spdz-proxy:v0.3.2_rc
+    image: spdz/spdz-proxy:v0.4.0
     depends_on:
       - workshop-voting1
     ports:
@@ -65,13 +63,11 @@ services:
     environment:
       SPDZ_HOST: workshop-voting1
       SPDZ_PORT: 14001
-      REST_PORT: 8080
       LOG_LEVEL: debug
     volumes:
-      - /Users/je0018/temp/spdzproxy:/usr/app/certs
-      - /Users/je0018/temp/logs:/usr/app/logs
+      - ${HOME}/temp/logs:/usr/app/logs
   workshop-voting-gui:
-    image: spdz/workshop-voting-gui:v0.1.3
+    image: spdz/workshop-voting-gui:v0.1.4
     depends_on:
       - spdz-proxy0
       - spdz-proxy1
@@ -81,6 +77,17 @@ services:
       NODE_ENV: production
       LOG_LEVEL: debug
     volumes:
-      - /Users/je0018/temp/votinggui:/usr/app/certs
-      - /Users/je0018/temp/votinggui:/usr/app/config
-      - /Users/je0018/temp/logs:/usr/app/logs
+      - ${HOME}/temp/votinggui:/usr/app/config
+      - ${HOME}/temp/logs:/usr/app/logs
+  nginx-proxy:
+    image: nginx:1.12.0
+    depends_on:
+      - workshop-voting-gui
+    ports:
+      - "8081:80"
+      - "3110:3110"
+      - "3111:3111"      
+    volumes:
+      - ${HOME}/development/spdz-deployment/nginx/voters-dev.conf:/etc/nginx/nginx.conf:ro
+      - ${HOME}/development/spdz-deployment/nginx/landingPage:/usr/share/nginx/html      
+      - ${HOME}/temp/logs:/var/log/nginx

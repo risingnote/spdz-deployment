@@ -4,8 +4,8 @@ FROM spdz/spdz:v0.3.4-workshop-voting
 # Build container with:
 #   docker build -f Dockerfile-spdz-preprocess -t spdz/spdz-preprocess .
 # Run container with:
-#   docker run -t --rm -v /location/tostore/preprocess/data:/usr/spdz/Player-Data \ 
-#       spdz/spdz-preprocess <number of parties, default is 2>
+#   docker run -t --rm -u `id -u $USER`
+#       -v /location/tostore/preprocess/data:/usr/spdz/Player-Data spdz/spdz-preprocess <number of parties, default is 2>
 
 LABEL name="SPDZ MPC setup phase" \
       description="Run fake-offline pre-processing phase for specified number of SPDZ parties." \

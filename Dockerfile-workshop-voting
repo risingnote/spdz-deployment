@@ -1,4 +1,4 @@
-FROM spdz/spdz:v0.3.4-workshop-voting
+FROM spdz/spdz:v0.3.5-bankers-bonus
 
 # Compile the workshop_voting mpc program into the container and setup hooks to pass in run time information.
 # Build container with:

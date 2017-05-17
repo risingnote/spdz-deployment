@@ -5,6 +5,7 @@ FROM spdz/spdz:v0.3.4-workshop-voting
 #   docker build -f Dockerfile-spdz-keymaterial -t spdz/spdz-keymaterial .
 # Run container with:
 #   docker run -it -u `id -u $USER` --rm -v $(pwd):/usr/spdz/keys spdz/spdz-keymaterial
+# Then copy SPDZ-Keys to Player-Data/3-128-40/Player-SPDZ-Keys-Pn where n is in {0,1,2}
 
 LABEL name="SPDZ MPC key material setup" \
       description="Run client-setup to generate keys used to secure client communication." \
