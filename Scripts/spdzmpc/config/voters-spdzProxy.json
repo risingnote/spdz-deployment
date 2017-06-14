@@ -1,0 +1,17 @@
+{
+  "spdzApiRoot" : "/voters/spdzapi",
+  "spdzProxyList" : [
+        {
+          "url": "https://alice.mpc.cs.bris.ac.uk",
+          "publicKey": "6e0352f03b44843560de9cab594b78d3870ee276766d3ba3fd9a77f3d5cca802"
+        },
+        {
+          "url": "https://bob.mpc.cs.bris.ac.uk",
+          "publicKey": "5f4fd4cc968b4c8654c9903cb0a83ff25a258239f565e900e166525f8108ec27"
+        },
+        {
+          "url": "https://carol.mpc.cs.bris.ac.uk",
+          "publicKey": "5747390d2ad73265bdab9420bb62e50e33367f4e59c0282d1c0443e536746514"
+        }
+      ]
+}

@@ -41,7 +41,7 @@ services:
       - ${HOME}/temp/Player-Data:/usr/spdz/Player-Data
       - ${HOME}/temp/logs:/usr/spdz/logs
   spdz-proxy0:
-    image: spdz/spdz-proxy:v0.4.0
+    image: spdz/spdz-proxy:v0.5.0
     depends_on:
       - bankers-bonus0
     ports:
@@ -49,11 +49,12 @@ services:
     environment:
       SPDZ_HOST: bankers-bonus0
       SPDZ_PORT: 14000
+      INTERFACE: rest
       LOG_LEVEL: debug
     volumes:
       - ${HOME}/temp/logs:/usr/app/logs
   spdz-proxy1:
-    image: spdz/spdz-proxy:v0.4.0
+    image: spdz/spdz-proxy:v0.5.0
     depends_on:
       - bankers-bonus1
     ports:
@@ -61,6 +62,7 @@ services:
     environment:
       SPDZ_HOST: bankers-bonus1
       SPDZ_PORT: 14001
+      INTERFACE: rest      
       LOG_LEVEL: debug
     volumes:
       - ${HOME}/temp/logs:/usr/app/logs

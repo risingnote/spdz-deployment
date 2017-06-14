@@ -1,0 +1,17 @@
+{
+  "spdzApiRoot" : "/bankers/spdzapi",
+  "spdzProxyList" : [
+        {
+          "url": "https://alice.mpc.cs.bris.ac.uk",
+          "publicKey": "4f005ba1964dfc1bf32987e851dc33c418e1f10745612d04fe66c66fbbca0004"
+        },
+        {
+          "url": "https://bob.mpc.cs.bris.ac.uk",
+          "publicKey": "e467e7819975393c5656b89580bc953bff34cf21f4492a0a7bebec566342dd21"
+        },
+        {
+          "url": "https://carol.mpc.cs.bris.ac.uk",
+          "publicKey": "8d89ea88c109d1bc5ec8b289655cd3439928cb09d6e53a87ffc1cb864993e671"
+        }
+      ]
+}
