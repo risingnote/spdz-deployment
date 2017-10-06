@@ -1,0 +1,87 @@
+# Dev compose file to run analytics app containers on a single host.
+#
+# Uses the compose_spdz_nw to allow containers to connect via name. Needed by 
+# spdz engine docker containers which are started dynamically by the SPDZ proxies.
+#
+# Start with docker-compose -f analytics-dev.yml up
+# Stop with docker-compose -f analytics-dev.yml down
+# Remove stopped containers with docker-compose -f analytics-dev.yml rm
+#
+version: "3"
+networks:
+  spdz_nw:
+services:
+  mysqlDev:
+    image: mysql:5.7
+    networks:
+      - spdz_nw
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - ${HOME}/development/analytics-engine/datadir:/var/lib/mysql
+  spdz-proxy-0:
+    image: spdz/spdz-proxy:v0.6.0
+    networks:
+      - spdz_nw
+    environment:
+      PLAYER_ID: 0
+      INTERFACE: websocket
+      SPDZ_HOST: spdz-analytics-0
+      SPDZ_PORT: 14000
+      LOG_LEVEL: debug
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/development/spdz-proxy/scripts:/usr/app/scripts
+      - ${HOME}//development/spdz-proxy/logs:/usr/app/logs
+  spdz-proxy-1:
+    image: spdz/spdz-proxy:v0.6.0
+    networks:
+      - spdz_nw
+    environment:
+      PLAYER_ID: 1
+      INTERFACE: websocket
+      SPDZ_HOST: spdz-analytics-1
+      SPDZ_PORT: 14001
+      LOG_LEVEL: debug
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/development/spdz-proxy/scripts:/usr/app/scripts
+      - ${HOME}//development/spdz-proxy/logs:/usr/app/logs
+  analytics-engine-0:
+    image: spdz/analytics-engine:snapshot
+    networks:
+      - spdz_nw
+    depends_on:
+      - mysqlDev
+      - spdz-proxy-0
+      - spdz-proxy-1
+    environment:
+      PLAYER_ID: 0
+    volumes:
+      - ${HOME}/development/analytics-engine/config/analyticConfig.bank.docker.json:/usr/app/config/analyticConfig.json
+      - ${HOME}/development/analytics-engine/logs:/usr/app/logs
+  analytics-engine-1:
+    image: spdz/analytics-engine:snapshot
+    networks:
+      - spdz_nw
+    depends_on:
+      - mysqlDev
+      - spdz-proxy-0
+      - spdz-proxy-1
+    environment:
+      PLAYER_ID: 1
+    volumes:
+      - ${HOME}/development/analytics-engine/config/analyticConfig.ins.docker.json:/usr/app/config/analyticConfig.json
+      - ${HOME}/development/analytics-engine/logs:/usr/app/logs
+  analytics-gui:
+    image: spdz/analytics-gui:v0.1.0
+    networks:
+      - spdz_nw
+    depends_on:
+      - analytics-engine-0
+      - analytics-engine-1
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${HOME}/development/spdz-analytics-gui/server/config/analyticConfig.docker.json:/usr/app/config/analyticConfig.json
+      - ${HOME}/development/spdz-analytics-gui/logs:/usr/app/logs
