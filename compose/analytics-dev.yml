@@ -48,28 +48,34 @@ services:
       - ${HOME}/development/spdz-proxy/scripts:/usr/app/scripts
       - ${HOME}//development/spdz-proxy/logs:/usr/app/logs
   analytics-engine-0:
-    image: spdz/analytics-engine:snapshot
+    image: spdz/analytics-engine:v0.1.1
     networks:
       - spdz_nw
     depends_on:
       - mysqlDev
       - spdz-proxy-0
       - spdz-proxy-1
+    ports:
+      - "8081:8080"
     environment:
       PLAYER_ID: 0
+      LOG_LEVEL: debug
     volumes:
       - ${HOME}/development/analytics-engine/config/analyticConfig.bank.docker.json:/usr/app/config/analyticConfig.json
       - ${HOME}/development/analytics-engine/logs:/usr/app/logs
   analytics-engine-1:
-    image: spdz/analytics-engine:snapshot
+    image: spdz/analytics-engine:v0.1.1
     networks:
       - spdz_nw
     depends_on:
       - mysqlDev
       - spdz-proxy-0
       - spdz-proxy-1
+    ports:
+      - "8082:8080"
     environment:
       PLAYER_ID: 1
+      LOG_LEVEL: debug
     volumes:
       - ${HOME}/development/analytics-engine/config/analyticConfig.ins.docker.json:/usr/app/config/analyticConfig.json
       - ${HOME}/development/analytics-engine/logs:/usr/app/logs
