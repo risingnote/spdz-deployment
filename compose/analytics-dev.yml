@@ -33,7 +33,7 @@ services:
       LOG_LEVEL: debug
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${HOME}/development/spdz-proxy/scripts:/usr/app/scripts
+      - ${HOME}/development/analytics-spdz/scripts:/usr/app/scripts
       - ${HOME}//development/spdz-proxy/logs:/usr/app/logs
   spdz-proxy-1:
     image: spdz/spdz-proxy:v0.6.0
@@ -47,7 +47,7 @@ services:
       LOG_LEVEL: debug
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${HOME}/development/spdz-proxy/scripts:/usr/app/scripts
+      - ${HOME}/development/analytics-spdz/scripts:/usr/app/scripts
       - ${HOME}//development/spdz-proxy/logs:/usr/app/logs
   analytics-engine-0:
     image: spdz/analytics-engine:v0.1.1
@@ -82,7 +82,7 @@ services:
       - ${HOME}/development/analytics-engine/config/analyticConfig.ins.docker.json:/usr/app/config/analyticConfig.json
       - ${HOME}/development/analytics-engine/logs:/usr/app/logs
   analytics-gui:
-    image: spdz/analytics-gui:v0.1.0
+    image: spdz/analytics-gui:v0.1.1
     networks:
       - spdz_nw
     depends_on:
