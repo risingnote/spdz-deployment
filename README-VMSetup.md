@@ -65,5 +65,9 @@ Backup iptables to keep changes through a reboot:
 1. The workshop voting GUI runs SSL connections from mpc -> alice, bob and carol at startup. There is a problem with running SSL connections using the external IP addresses from the internal network, producing an SSL handshake error. This is related to the load balancer used by external web access. The pragmatic solution adopted is to use the internal IP addresses and to override the wrong host in certificate
 warning with the node environment variable  NODE_TLS_REJECT_UNAUTHORIZED=1.
 
-2. yum-cron runs at 0400 approx and if a docker update is applied the running containers are killed and not automatically restarted.
+2. yum-cron runs at 0400 approx and if a docker update is applied the running containers are killed and not automatically restarted. Solved with cron job to restart docker containers (see Scripts/webmpc/restart):
+
+```30 05 * * * /home/je0018/docker/restart/restartAll.sh >> /home/je0018/docker/restart/restart.log 2>&1 ```
+
+
 
