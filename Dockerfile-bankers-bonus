@@ -1,4 +1,4 @@
-FROM spdz/spdz:snapshot
+FROM spdz/spdz:v0.6.0-bankers-bonus
 
 # Compile the bankers bonus mpc program into the container and setup hooks to pass in run time information.
 # Build container with:

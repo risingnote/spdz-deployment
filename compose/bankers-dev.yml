@@ -1,15 +1,22 @@
 # Dev compose file to run bankers bonus app containers on a single host.
-# Uses the default network to allow containers to connect via name.
+# Uses a custom bridge network to allow containers to connect via name.
+# Note that gui and proxies must be accessible from browser (via nginx proxy).
 # Start with docker-compose -f bankers-dev.yml up
 # Stop with docker-compose -f bankers-dev.yml down
 version: "3"
+networks:
+  spdz_nw:
 services:
   spdz-startup:
     image: spdz/spdz-startup:latest
+    networks:
+      - spdz_nw
     ports:
       - "12999:12999"
   bankers-bonus0:
-    image: spdz/bankers-bonus:v0.3.5
+    image: spdz/bankers-bonus:v0.6.0
+    networks:
+      - spdz_nw
     depends_on:
       - spdz-startup
     expose:
@@ -22,10 +29,12 @@ services:
       playerId: 0
       startupHost: spdz-startup
     volumes:
-      - ${HOME}/temp/Player-Data:/usr/spdz/Player-Data
-      - ${HOME}/temp/logs:/usr/spdz/logs
+      - ${HOME}/development/spdz-bankers-gui/spdz/Player-Data:/usr/spdz/Player-Data
+      - ${HOME}/development/spdz-bankers-gui/spdz/logs:/usr/spdz/logs
   bankers-bonus1:
-    image: spdz/bankers-bonus:v0.3.5
+    image: spdz/bankers-bonus:v0.6.0
+    networks:
+      - spdz_nw
     depends_on:
       - spdz-startup
     expose:
@@ -38,55 +47,57 @@ services:
       playerId: 1
       startupHost: spdz-startup
     volumes:
-      - ${HOME}/temp/Player-Data:/usr/spdz/Player-Data
-      - ${HOME}/temp/logs:/usr/spdz/logs
-  spdz-proxy0:
-    image: spdz/spdz-proxy:v0.5.0
+      - ${HOME}/development/spdz-bankers-gui/spdz/Player-Data:/usr/spdz/Player-Data
+      - ${HOME}/development/spdz-bankers-gui/spdz/logs:/usr/spdz/logs
+  spdz-proxy-bankers0:
+    image: spdz/spdz-proxy:v0.7.0
+    networks:
+      - spdz_nw
     depends_on:
       - bankers-bonus0
-    ports:
-      - "3010:8080"
     environment:
       SPDZ_HOST: bankers-bonus0
       SPDZ_PORT: 14000
       INTERFACE: rest
       LOG_LEVEL: debug
     volumes:
-      - ${HOME}/temp/logs:/usr/app/logs
-  spdz-proxy1:
-    image: spdz/spdz-proxy:v0.5.0
+      - ${HOME}/development/spdz-proxy/logs:/usr/app/logs
+  spdz-proxy-bankers1:
+    image: spdz/spdz-proxy:v0.7.0
+    networks:
+      - spdz_nw
     depends_on:
       - bankers-bonus1
-    ports:
-      - "3011:8080"
     environment:
       SPDZ_HOST: bankers-bonus1
       SPDZ_PORT: 14001
       INTERFACE: rest      
       LOG_LEVEL: debug
     volumes:
-      - ${HOME}/temp/logs:/usr/app/logs
+      - ${HOME}/development/spdz-proxy/logs:/usr/app/logs
   bankers-bonus-gui:
-    image: spdz/bankers-bonus-gui:v0.5.1
+    image: spdz/bankers-bonus-gui:v0.6.0
+    networks:
+      - spdz_nw
     depends_on:
-      - spdz-proxy0
-      - spdz-proxy1
-    ports:
-      - "8080:8080"
+      - spdz-proxy-bankers0
+      - spdz-proxy-bankers1
     environment:
       NODE_ENV: production
       LOG_LEVEL: debug
     volumes:
-      - ${HOME}/temp/bankersgui:/usr/app/config
-      - ${HOME}/temp/logs:/usr/app/logs
+      - ${HOME}/development/spdz-bankers-gui/server/config:/usr/app/config
+      - ${HOME}/development/spdz-bankers-gui/server/logs:/usr/app/logs
   nginx-proxy:
     image: nginx:1.12.0
+    networks:
+      - spdz_nw
     depends_on:
       - bankers-bonus-gui
     ports:
-      - "8081:80"
-      - "3110:3110"
-      - "3111:3111"      
+      - "8080:80"
+      - "3010:3010"
+      - "3011:3011"      
     volumes:
       - ${HOME}/development/spdz-deployment/nginx/bankers-dev.conf:/etc/nginx/nginx.conf:ro
       - ${HOME}/temp/logs:/var/log/nginx
