@@ -22,7 +22,7 @@ services:
     volumes:
       - ${HOME}/development/analytics-engine/datadir:/var/lib/mysql
   spdz-proxy-0:
-    image: spdz/spdz-proxy:v0.6.0
+    image: spdz/spdz-proxy:v0.7.0
     networks:
       - spdz_nw
     environment:
@@ -36,7 +36,7 @@ services:
       - ${HOME}/development/analytics-spdz/scripts:/usr/app/scripts
       - ${HOME}//development/spdz-proxy/logs:/usr/app/logs
   spdz-proxy-1:
-    image: spdz/spdz-proxy:v0.6.0
+    image: spdz/spdz-proxy:v0.7.0
     networks:
       - spdz_nw
     environment:
@@ -50,7 +50,7 @@ services:
       - ${HOME}/development/analytics-spdz/scripts:/usr/app/scripts
       - ${HOME}//development/spdz-proxy/logs:/usr/app/logs
   analytics-engine-0:
-    image: spdz/analytics-engine:v0.1.1
+    image: spdz/analytics-engine:v0.2.0
     networks:
       - spdz_nw
     depends_on:
@@ -66,7 +66,7 @@ services:
       - ${HOME}/development/analytics-engine/config/analyticConfig.bank.docker.json:/usr/app/config/analyticConfig.json
       - ${HOME}/development/analytics-engine/logs:/usr/app/logs
   analytics-engine-1:
-    image: spdz/analytics-engine:v0.1.1
+    image: spdz/analytics-engine:v0.2.0
     networks:
       - spdz_nw
     depends_on:
